@@ -46,6 +46,22 @@ import java.util.List;
 
 public abstract class InitializationUtils {
 
+    public static void checkClusterName(Settings settings) {
+        String clusterName = settings.getClusterName();
+        if (!StringUtils.hasText(clusterName)) {
+            throw new EsHadoopIllegalArgumentException("es.cluster.name must not be null.");
+        }
+
+        RestClient restClient = new RestClient(settings);
+        try {
+            if (!clusterName.equals(restClient.getClusterName())) {
+                throw new EsHadoopIllegalArgumentException("es.cluster.name is not match cluster_name.");
+            }
+        } finally {
+            restClient.close();
+        }
+    }
+
     public static void checkIdForOperation(Settings settings) {
         String operation = settings.getOperation();
 

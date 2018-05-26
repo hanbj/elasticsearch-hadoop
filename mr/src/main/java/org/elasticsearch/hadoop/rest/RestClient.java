@@ -651,6 +651,15 @@ public class RestClient implements Closeable, StatsAware {
         return Health.valueOf(status.toUpperCase());
     }
 
+    public String getClusterName() {
+        StringBuilder sb = new StringBuilder("/_cluster/health");
+        String clusterName = get(sb.toString(), "cluster_name");
+        if (clusterName == null) {
+            throw new EsHadoopIllegalStateException("Could not determine cluster name, returned cluster_name was null. Bailing out...");
+        }
+        return clusterName;
+    }
+
     public boolean waitForHealth(String index, Health health, TimeValue timeout) {
         StringBuilder sb = new StringBuilder("/_cluster/health/");
         sb.append(index);

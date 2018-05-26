@@ -47,8 +47,8 @@ object EsSparkSQL {
   def esDF(sc: SQLContext, resource: String, query: String): DataFrame = esDF(sc, Map(ES_RESOURCE_READ -> resource, ES_QUERY -> query))
   def esDF(sc: SQLContext, cfg: Map[String, String]): DataFrame = {
     val esConf = new SparkSettingsManager().load(sc.sparkContext.getConf).copy();
-    esConf.merge(cfg.asJava)
-
+    esConf.merge(cfg.asJava).merge(sc.sparkSession.conf.getAll.asJava)
+    InitializationUtils.checkClusterName(esConf)
     sc.read.format("org.elasticsearch.spark.sql").options(esConf.asProperties.asScala.toMap).load
   }
 
@@ -85,6 +85,7 @@ object EsSparkSQL {
       val esCfg = new PropertiesSettings().load(sparkCfg.save())
       esCfg.merge(cfg.asJava)
 
+      InitializationUtils.checkClusterName(esCfg)
       InitializationUtils.checkIdForOperation(esCfg)
       InitializationUtils.checkIndexExistence(esCfg)
 

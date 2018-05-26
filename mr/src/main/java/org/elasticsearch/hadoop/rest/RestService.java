@@ -213,6 +213,7 @@ public abstract class RestService implements Serializable {
     public static List<PartitionDefinition> findPartitions(Settings settings, Log log) {
         Version.logVersion();
 
+        InitializationUtils.checkClusterName(settings);
         InitializationUtils.validateSettings(settings);
         InitializationUtils.validateSettingsForReading(settings);
 

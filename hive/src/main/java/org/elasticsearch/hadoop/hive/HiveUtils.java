@@ -192,6 +192,7 @@ abstract class HiveUtils {
     }
 
     static void init(Settings settings, Log log) {
+        InitializationUtils.checkClusterName(settings);
         InitializationUtils.checkIdForOperation(settings);
         InitializationUtils.setFieldExtractorIfNotSet(settings, HiveFieldExtractor.class, log);
         InitializationUtils.discoverEsVersion(settings, log);

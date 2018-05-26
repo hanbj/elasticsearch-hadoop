@@ -212,6 +212,10 @@ public interface ConfigurationOptions {
 
     String ES_READ_SOURCE_FILTER = "es.read.source.filter";
 
+    String ES_INDEX_FILTER = "es.index.filter";
+
+    String ES_CLUSTER_NAME = "es.cluster.name";
+
     /** Metadata */
     String ES_READ_METADATA = "es.read.metadata";
     String ES_READ_METADATA_DEFAULT = "false";

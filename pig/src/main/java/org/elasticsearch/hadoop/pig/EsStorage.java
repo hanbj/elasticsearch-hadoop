@@ -148,6 +148,7 @@ public class EsStorage extends LoadFunc implements LoadMetadata, LoadPushDown, S
 
         settings = (read ? settings.setResourceRead(location) : settings.setResourceWrite(location));
 
+        InitializationUtils.checkClusterName(settings);
         InitializationUtils.checkIdForOperation(settings);
         InitializationUtils.setValueWriterIfNotSet(settings, PigValueWriter.class, log);
         InitializationUtils.setValueReaderIfNotSet(settings, PigValueReader.class, log);

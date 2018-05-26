@@ -124,7 +124,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
   extends BaseRelation with PrunedFilteredScan with InsertableRelation
   {
 
-  @transient lazy val cfg = { new SparkSettingsManager().load(sqlContext.sparkContext.getConf).merge(parameters.asJava) }
+  @transient lazy val cfg = { new SparkSettingsManager().load(sqlContext.sparkContext.getConf).merge(parameters.asJava).merge(sqlContext.sparkSession.conf.getAll.asJava) }
 
   @transient lazy val lazySchema = { SchemaUtils.discoverMapping(cfg) }
 
@@ -140,7 +140,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
 
   // PrunedFilteredScan
   def buildScan(requiredColumns: Array[String], filters: Array[Filter]) = {
-    val paramWithScan = LinkedHashMap[String, String]() ++ parameters
+    val paramWithScan = LinkedHashMap[String, String]() ++ parameters ++ sqlContext.sparkSession.conf.getAll
 
     var filteredColumns = requiredColumns
     

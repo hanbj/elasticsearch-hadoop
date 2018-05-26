@@ -113,7 +113,7 @@ def File gitBranch() {
     File gitHead =  file("$rootDir/.git/HEAD")
     if (gitHead != null && !gitHead.exists()) {
       // Try as a sub module
-      subModuleGit = file("$rootDir/.git")
+      File subModuleGit = file("$rootDir/.git")
       if (subModuleGit != null && subModuleGit.exists()) {
         String content = subModuleGit.text.trim()
         if (content.startsWith("gitdir:")) {
