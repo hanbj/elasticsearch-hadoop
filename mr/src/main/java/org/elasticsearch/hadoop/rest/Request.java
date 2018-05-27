@@ -35,5 +35,7 @@ public interface Request {
 
     CharSequence params();
 
+    void params(String clusterName);
+
     ByteSequence body();
 }

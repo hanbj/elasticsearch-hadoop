@@ -26,7 +26,7 @@ public class SimpleRequest implements Request {
     private final Method method;
     private final CharSequence uri;
     private final CharSequence path;
-    private final CharSequence params;
+    private CharSequence params;
     private final ByteSequence body;
 
     public SimpleRequest(Method method, CharSequence uri, CharSequence path) {
@@ -77,6 +77,15 @@ public class SimpleRequest implements Request {
     @Override
     public CharSequence params() {
         return params;
+    }
+
+    @Override
+    public void params(String clusterName) {
+        if (StringUtils.hasText(params)) {
+            params = params + "&cluster.name=" + clusterName;
+        } else {
+            params = "cluster.name=" + clusterName;
+        }
     }
 
     @Override

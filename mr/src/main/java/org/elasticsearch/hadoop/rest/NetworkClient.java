@@ -109,6 +109,7 @@ public class NetworkClient implements StatsAware, Closeable {
 
             newNode = false;
             try {
+                routedRequest.params(settings.getClusterName());
                 response = currentTransport.execute(routedRequest);
                 ByteSequence body = routedRequest.body();
                 if (body != null) {
