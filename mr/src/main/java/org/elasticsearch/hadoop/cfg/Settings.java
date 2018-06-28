@@ -669,6 +669,10 @@ public abstract class Settings {
         return getProperty(ES_INDEX_FILTER, "");
     }
 
+    public String getDeleteByQuery() {
+        return getProperty(ES_OPERATION_DELETE_BY_QUERY, "");
+    }
+
     public String getClusterName() {
         return getProperty(ES_CLUSTER_NAME, "");
     }

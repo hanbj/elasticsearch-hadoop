@@ -530,6 +530,18 @@ public class RestClient implements Closeable, StatsAware {
         Response res = executeNotFoundAllowed(req);
         return (res.status() == HttpStatus.OK ? true : false);
     }
+
+    public boolean deleteByQuery(String indexOrType, String query) {
+        if (indexOrType.endsWith("/")) {
+            indexOrType += "_delete_by_query";
+        } else {
+            indexOrType += "/_delete_by_query";
+        }
+        Request req = new SimpleRequest(POST, null, indexOrType, new BytesArray(query));
+        Response res = executeNotFoundAllowed(req);
+        return (res.status() == HttpStatus.OK ? true : false);
+    }
+
     public boolean deleteScroll(String scrollId) {
         BytesArray body;
         if (internalVersion.onOrAfter(EsMajorVersion.V_2_X)) {

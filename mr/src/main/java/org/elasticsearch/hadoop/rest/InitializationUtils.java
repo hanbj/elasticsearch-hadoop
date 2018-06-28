@@ -322,6 +322,15 @@ public abstract class InitializationUtils {
         }
     }
 
+    public static void checkIndexExist(Settings settings) {
+        RestRepository repository = new RestRepository(settings);
+        try {
+            doCheckIndexExistence(settings, repository);
+        } finally {
+            repository.close();
+        }
+    }
+
     private static void doCheckIndexExistence(Settings settings, RestRepository client) {
         // check index existence
         if (!client.indexExists(false)) {
@@ -415,5 +424,22 @@ public abstract class InitializationUtils {
         }
 
         return false;
+    }
+
+    public static void deleteEs(Settings settings) {
+        RestRepository repository = new RestRepository(settings);
+        try {
+            if (settings.getDeleteByQuery().equals(ConfigurationOptions.ES_OPERATION_DELETE_BY_QUERY)) {
+                if (StringUtils.hasText(settings.getQuery())) {
+                    repository.deleteByQuery(settings.getQuery());
+                } else {
+                    repository.deleteByQuery("{\"query\": {\"match_all\": {}}}");
+                }
+            } else {
+                repository.deleteIndex();
+            }
+        } finally {
+            repository.close();
+        }
     }
 }

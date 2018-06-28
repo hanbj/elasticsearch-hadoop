@@ -412,6 +412,14 @@ public class RestRepository implements Closeable, StatsAware {
         return client.touch(resourceW.index());
     }
 
+    public void deleteIndex() {
+        client.delete(resourceW.indexAndType());
+    }
+
+    public void deleteByQuery(String query) {
+        client.deleteByQuery(resourceW.indexAndType(), query);
+    }
+
     public void delete() {
         if (client.internalVersion.on(EsMajorVersion.V_1_X)) {
             // ES 1.x - delete as usual

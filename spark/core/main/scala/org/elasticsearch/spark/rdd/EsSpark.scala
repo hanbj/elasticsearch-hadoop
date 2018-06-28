@@ -111,4 +111,19 @@ object EsSpark {
   def saveJsonToEs(rdd: RDD[_], cfg: Map[String, String]) {
     saveToEs(rdd, collection.mutable.Map(cfg.toSeq: _*) += (ES_INPUT_JSON -> true.toString))
   }
+
+  def deleteEs(sc: SparkContext, resource: String) {delete(sc, Map(ES_RESOURCE_WRITE -> resource))}
+  def deleteEs(sc: SparkContext, resource: String, cfg: Map[String, String]) {delete(sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_WRITE -> resource))}
+  def deleteEs(sc: SparkContext, resource: String, cfg: Map[String, String], query: String) {delete(sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_WRITE -> resource, ES_QUERY -> query))}
+  def deleteEs(sc: SparkContext, cfg: Map[String, String], query: String) {delete(sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_QUERY -> query))}
+  def deleteEs(sc: SparkContext, cfg: Map[String, String]) {delete(sc, cfg)}
+  private def delete(sc: SparkContext, cfg: Map[String, String]): Unit = {
+    val sparkCfg = new SparkSettingsManager().load(sc.getConf)
+    val config = new PropertiesSettings().load(sparkCfg.save())
+    config.merge(cfg.asJava)
+
+    InitializationUtils.checkClusterName(config)
+    InitializationUtils.checkIndexExist(config)
+    InitializationUtils.deleteEs(config)
+  }
 }

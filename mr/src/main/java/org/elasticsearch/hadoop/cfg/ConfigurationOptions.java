@@ -233,7 +233,7 @@ public interface ConfigurationOptions {
     String ES_OPERATION_CREATE = "create";
     String ES_OPERATION_UPDATE = "update";
     String ES_OPERATION_UPSERT = "upsert";
-    String ES_OPERATION_DELETE = "delete";
+    String ES_OPERATION_DELETE_BY_QUERY = "_delete_by_query";
     String ES_WRITE_OPERATION_DEFAULT = ES_OPERATION_INDEX;
 
     String ES_UPDATE_RETRY_ON_CONFLICT = "es.update.retry.on.conflict";
